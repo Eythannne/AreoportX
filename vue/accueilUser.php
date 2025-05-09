@@ -1,26 +1,31 @@
 <?php
 
-include "src/repository/RepositoryUtilisateur.php";
-require_once "src/bdd/BDD.php";
-require_once "src/modele/Utilisateur.php";
+include "../src/repository/RepositoryUtilisateur.php";
+require_once "../src/bdd/BDD.php";
+require_once "../src/modele/Utilisateur.php";
 
-include "src/repository/RepositoryPilote.php";
-require_once "src/bdd/BDD.php";
-require_once "src/modele/Pilote.php";
+include "../src/repository/RepositoryPilote.php";
+require_once "../src/bdd/BDD.php";
+require_once "../src/modele/Pilote.php";
 
-include "src/repository/RepositoryAvion.php";
-require_once "src/bdd/BDD.php";
-require_once "src/modele/Avion.php";
+include "../src/repository/RepositoryAvion.php";
+require_once "../src/bdd/BDD.php";
+require_once "../src/modele/Avion.php";
 
-include "src/repository/RepositoryVol.php";
-require_once "src/bdd/BDD.php";
-require_once "src/modele/Vol.php";
+include "../src/repository/RepositoryVol.php";
+require_once "../src/bdd/BDD.php";
+require_once "../src/modele/Vol.php";
 
-include "src/repository/RepositoryReservation.php";
-require_once "src/bdd/BDD.php";
-require_once "src/modele/Reservation.php";
+include "../src/repository/RepositoryReservation.php";
+require_once "../src/bdd/BDD.php";
+require_once "../src/modele/Reservation.php";
 
 session_start();
+
+if ($_SESSION["userConnecte"]["role"] == "visiteur") {
+    header('Location:../index.php');
+    exit;
+}
 
 $userPrenom = isset($_SESSION["userConnecte"]["userPrenom"]) ? $_SESSION["userConnecte"]["userPrenom"] : "Invité";
 $repositoryVol = new RepositoryVol();
@@ -38,7 +43,7 @@ $destinations = $repositoryVol->getDestinations();
 
     <style>
         body {
-            background-image: url('asset/img/imageAvion.jpg');
+            background-image: url('../asset/img/imageAvion.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -108,8 +113,8 @@ $destinations = $repositoryVol->getDestinations();
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="index.php">
-            <img height="50" src="asset/img/areoportX.png" alt="Logo">
+        <a class="navbar-brand" href="accueilUser.php">
+            <img height="50" src="../asset/img/areoportX.png" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -121,11 +126,11 @@ $destinations = $repositoryVol->getDestinations();
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img height="40" src="asset/img/compte.png" alt="Compte">
+                        <img height="40" src="../asset/img/compte.png" alt="Compte">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-                        <li><a class="dropdown-item" href="vue/inscriptionUtilisateur.php">Inscription</a></li>
-                        <li><a class="dropdown-item" href="vue/connexionUtilisateur.php">Connexion</a></li>
+                        <li><a class="dropdown-item" href="profilUtilisateur.php">Profil</a></li>
+                        <li><a class="dropdown-item" href="../src/traitement/utilisateur/traitementDeconnexionUtilisateur.php">Deconnexion</a></li>
                     </ul>
                 </li>
             </ul>
@@ -137,14 +142,14 @@ $destinations = $repositoryVol->getDestinations();
     <div class="content-box">
         <h1>Bienvenue à AreoportX</h1>
         <p class="lead">L'aéroport le plus fiable du mondeX</p>
-        <p class="text-center">Bonjour <strong>l'Ami</strong>, ravi de vous revoir !</p>
+        <p class="text-center">Bonjour <strong><?= htmlspecialchars($userPrenom) ?></strong>, ravi de vous revoir !</p>
     </div>
 </div>
 <!-- Barre de recherche -->
 <div class="container mt-0">
-    <form method="GET" action="src/traitement/vol/traitementRechercheDestinationVol.php" class="d-flex justify-content-center mb-3">
+    <form method="GET" action="../src/traitement/vol/traitementRechercheDestinationVol.php" class="d-flex justify-content-center mb-3">
         <input type="text" name="destination" class="form-control w-50 me-2" placeholder="Rechercher une destination..." required>
-        <button type="button" class="btn btn-light" onclick="verifierConnexion(event)">
+        <button type="submit" class="btn btn-light">
             🔍
         </button>
     </form>
@@ -168,18 +173,18 @@ $destinations = $repositoryVol->getDestinations();
     <div class="carousel-track">
         <div class="carousel-slide">
             <!-- Place tes images ici -->
-            <img src="asset/img/photo%201.jpg" alt="1">
-            <img src="asset/img/photo%202.jpg" alt="2">
-            <img src="asset/img/photo%203.jpg" alt="3">
-            <img src="asset/img/photo%204.jpg" alt="4">
-            <img src="asset/img/photo%205.jpeg" alt="5">
+            <img src="../asset/img/photo%201.jpg" alt="1">
+            <img src="../asset/img/photo%202.jpg" alt="2">
+            <img src="../asset/img/photo%203.jpg" alt="3">
+            <img src="../asset/img/photo%204.jpg" alt="4">
+            <img src="../asset/img/photo%205.jpeg" alt="5">
 
             <!-- Duplication pour effet infini -->
-            <img src="asset/img/photo%201.jpg" alt="1">
-            <img src="asset/img/photo%202.jpg" alt="2">
-            <img src="asset/img/photo%203.jpg" alt="3">
-            <img src="asset/img/photo%204.jpg" alt="4">
-            <img src="asset/img/photo%205.jpeg" alt="5">
+            <img src="../asset/img/photo%201.jpg" alt="1">
+            <img src="../asset/img/photo%202.jpg" alt="2">
+            <img src="../asset/img/photo%203.jpg" alt="3">
+            <img src="../asset/img/photo%204.jpg" alt="4">
+            <img src="../asset/img/photo%205.jpeg" alt="5">
         </div>
     </div>
 </div>
@@ -208,21 +213,6 @@ $destinations = $repositoryVol->getDestinations();
             li.className = "list-group-item text-danger";
             li.textContent = "Aucune destination trouvée.";
             liste.appendChild(li);
-        }
-    }
-</script>
-<script>
-    function verifierConnexion(event) {
-        // Simule si l'utilisateur est connecté (à remplacer par une vraie vérification côté serveur)
-        const estConnecte = <?= isset($_SESSION['utilisateur']) ? 'true' : 'false' ?>;
-
-        if (!estConnecte) {
-            event.preventDefault();
-            alert("Veuillez vous connecter pour effectuer une recherche.");
-            window.location.href = "vue/connexionUtilisateur.php";
-        } else {
-            // Si connecté, soumettre le formulaire
-            event.target.closest("form").submit();
         }
     }
 </script>
